@@ -4,8 +4,10 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
   maintainer.1="Pedro Branco (@pedrobranco)" \
   maintainer.2="Rui Marinho (@ruimarinho)"
 
-RUN useradd -r bitcoin \
-  && apt-get update -y \
+RUN addgroup --gid 1000 bitcoin
+RUN adduser --disabled-password --gecos '' --uid 1000 --gid 1000 bitcoin
+
+RUN apt-get update -y \
   && apt-get install -y curl gnupg gosu \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -38,7 +40,7 @@ RUN set -ex \
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-VOLUME ["/home/bitcoin/.bitcoin"]
+#VOLUME ["/home/bitcoin/.bitcoin"]
 
 EXPOSE 8332 8333 18332 18333 18443 18444 38333 38332
 
